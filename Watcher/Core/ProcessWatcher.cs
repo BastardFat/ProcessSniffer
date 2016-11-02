@@ -5,8 +5,15 @@ using System.Text;
 
 namespace Watcher.Core
 {
-    class ProcessWatcher
+    public class ProcessWatcher
     {
+
+
+
+
+        
+
+
 
 
 

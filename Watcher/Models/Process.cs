@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Watcher.Models
 {
-    class Process
+    public class Process
     {
         public Process(System.Diagnostics.Process process)
         {
@@ -28,6 +28,10 @@ namespace Watcher.Models
 
         private System.Diagnostics.Process realProcess;
 
+        public override string ToString()
+        {
+            return Name;
+        }
 
     }
 }

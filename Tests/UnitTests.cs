@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using Watcher.Tools;
 using System.Threading;
+using Watcher.Core;
 
 namespace Tests
 {
@@ -37,5 +38,12 @@ namespace Tests
             ct.StopCycle();
             Thread.Sleep(2000);
         }
+        [TestMethod]
+        public void ProcessListTest()
+        {
+            ProcessList pl = new ProcessList();
+            pl.UpdateProcessList();
+        }
     }
+
 }
