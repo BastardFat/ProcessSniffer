@@ -11,6 +11,7 @@ namespace Watcher.Models
         {
             realProcess = process;
             Name = process.ProcessName;
+            Pid = process.Id;
             Path = process.MainModule.FileName;
             Title = process.MainWindowTitle;
             StartTime = process.StartTime;
@@ -19,6 +20,7 @@ namespace Watcher.Models
         public string Name { get; set; }
         public string Path { get; set; }
         public string Title { get; set; }
+        public int Pid { get; set; }
         public DateTime StartTime { get; set; }
 
         public System.Diagnostics.Process RealProcess

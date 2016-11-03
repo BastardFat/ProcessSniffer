@@ -17,7 +17,7 @@ namespace Tests
 
             CycleThread ct = new CycleThread(() =>
             {
-                Console.WriteLine($"[{(DateTime.Now - started).TotalMilliseconds}] Doing some work...");
+                Debug.WriteLine($"[{(DateTime.Now - started).TotalMilliseconds}] Doing some work...");
             }, 200);
 
             Thread.Sleep(2000);
@@ -44,6 +44,30 @@ namespace Tests
             ProcessList pl = new ProcessList();
             pl.UpdateProcessList();
         }
+
+        [TestMethod]
+        public void ProcessListEventsTest()
+        {
+            ProcessList pl = new ProcessList();
+
+            pl.StartProcess += (proc) =>
+            {
+                Debug.WriteLine($"Started {proc.Name} [{proc.Pid}]");
+            };
+            pl.EndProcess += (proc) =>
+            {
+                Debug.WriteLine($"Ended {proc.Name} [{proc.Pid}]");
+            };
+            CycleThread ct = new CycleThread(() =>
+            {
+                pl.UpdateProcessList();
+            }, 1000);
+            ct.StartCycle();
+
+            Thread.Sleep(10 * 1000);
+
+        }
+
     }
 
 }
