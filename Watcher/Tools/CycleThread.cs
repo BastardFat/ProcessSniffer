@@ -8,7 +8,7 @@ using Watcher.Models.Enums;
 
 namespace Watcher.Tools
 {
-    public class CycleThread
+    public class CycleThread : IDisposable
     {
         public CycleThread(Action cycleBody, int refreshPeriod = 1000)
         {
@@ -18,9 +18,8 @@ namespace Watcher.Tools
             ResetCycle();
         }
 
-
-        private Task MainTask;
         public int RefreshPeriod { get; set; }
+        public CycleThreadStates State { get; private set; }
 
         public void StartCycle()
         {
@@ -62,10 +61,12 @@ namespace Watcher.Tools
                 Pausing = false;
         }
 
+
+        private Task MainTask;
         private Action CycleBody;
         private volatile bool Stoping = false;
         private volatile bool Pausing = false;
-        public CycleThreadStates State { get; private set; }
+        
 
 
         private void TaskBody()
@@ -80,6 +81,34 @@ namespace Watcher.Tools
             }
             State = CycleThreadStates.Stoped;
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    StopCycle();
+                    MainTask?.Dispose();
+                }
+                disposedValue = true;
+            }
+        }
+
+        ~CycleThread()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        #endregion
 
     }
 }
