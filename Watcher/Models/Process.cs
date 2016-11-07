@@ -9,7 +9,6 @@ namespace Watcher.Models
     {
         public Process(System.Diagnostics.Process process)
         {
-            realProcess = process;
             Name = process.ProcessName;
             Pid = process.Id;
             Path = process.MainModule.FileName;
@@ -17,19 +16,16 @@ namespace Watcher.Models
             StartTime = process.StartTime;
         }
 
-        public string Name { get; set; }
-        public string Path { get; set; }
-        public string Title { get; set; }
-        public int Pid { get; set; }
-        public DateTime StartTime { get; set; }
+        public string Name { get; }
+        public string Path { get; }
+        public string Title { get; }
+        public int Pid { get; }
+        public DateTime StartTime { get; }
 
 
-        // TODO: Consider the possibility of getting rid of this thing
-        public System.Diagnostics.Process RealProcess
-        {
-            get { return realProcess; }
-        }
-        private System.Diagnostics.Process realProcess;
+        public System.Diagnostics.Process FindByPID() =>
+            System.Diagnostics.Process.GetProcessById(Pid);
+
 
         public override string ToString()
         {

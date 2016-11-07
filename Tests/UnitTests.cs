@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Watcher.Models.Enums;
 using Watcher.Warners.Criterias;
 using Watcher.Models.Enums.Criterias;
+using Watcher.Warners;
 
 namespace Tests
 {
@@ -163,8 +164,7 @@ namespace Tests
             {
                 proc.CloseMainWindow();
             }
-
-
+            Process.Start("calc.exe");
             Process.Start("calc.exe");
             Thread.Sleep(200);
             
@@ -179,11 +179,15 @@ namespace Tests
             {
                 if (criteria.CheckCriteria(proc)) checkNumber++;
             }
-            Assert.AreEqual(checkNumber, 1);
-                            
-            var t = Process.GetProcessesByName("calc")[0];
-            t.CloseMainWindow();
-            t.WaitForExit();
+            Assert.AreEqual(checkNumber, 2);
+
+
+            foreach (var proc in Process.GetProcessesByName("calc"))
+            {
+                proc.Kill();
+                proc.WaitForExit();
+            }
+
             pl.UpdateProcessList();
             checkNumber = 0;
             foreach (var proc in pl.ActualProcessList)
@@ -214,10 +218,66 @@ namespace Tests
 
             var newcriteria = SelectionCriteria.CreateFromJson(criteria.ToJson());
 
-
-
             Assert.AreEqual(criteria.ToString(), newcriteria.ToString());
         }
+
+
+        [TestMethod]
+        [TestCategory(nameof(ProcessWarner))]
+        public void ProcessWarnerTest()
+        {
+            using (var procWatcher = new ProcessWatcher(100))
+            {
+
+                var procWarner = new ProcessWarner(procWatcher, new ProcessSelectionCriteria(ProcessFields.Name, SelectionCriteriaMode.Equal, "calc"));
+
+                int allRight = 0;
+
+                procWarner.ProcessWarning += (proc) =>
+                {
+                    allRight++;
+                };
+
+
+                int iterations = 3;
+                for (int i = 0; i < iterations; i++)
+                {
+                    Process.Start("calc.exe");
+
+                    Thread.Sleep(500);
+
+                    var t = Process.GetProcessesByName("calc")[0];
+                    t.CloseMainWindow();
+                    t.WaitForExit();
+                    Thread.Sleep(500);
+                }
+
+                Assert.AreEqual(iterations, allRight);
+                
+            }
+        }
+
+
+        [TestMethod]
+        [TestCategory(nameof(ProcessWarner))]
+        public void ProcessKillerTest()
+        {
+            using (var procWatcher = new ProcessWatcher(100))
+            {
+
+                var procKiller = new ProcessKiller(procWatcher, new ProcessSelectionCriteria(ProcessFields.Name, SelectionCriteriaMode.Equal, "calc"));
+
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Process.Start("calc.exe").WaitForExit(3000);
+                    bool OK = Process.GetProcessesByName("calc").Length == 0;
+                    Assert.IsTrue(OK); 
+                }
+
+            }
+        }
+
 
     }
 }

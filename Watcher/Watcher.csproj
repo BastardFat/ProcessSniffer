@@ -47,9 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\ProcessKiller.cs" />
     <Compile Include="Core\ProcessList.cs" />
-    <Compile Include="Core\ProcessWarner.cs" />
     <Compile Include="Core\ProcessWatcher.cs" />
     <Compile Include="Models\Enums\Criterias\ProcessFields.cs" />
     <Compile Include="Models\Enums\Criterias\SelectionCriteriaMode.cs" />
@@ -64,6 +62,8 @@
     <Compile Include="Warners\Criterias\OrSelectionCriteria.cs" />
     <Compile Include="Warners\Criterias\ProcessSelectionCriteria.cs" />
     <Compile Include="Warners\Criterias\SelectionCriteria.cs" />
+    <Compile Include="Warners\ProcessKiller.cs" />
+    <Compile Include="Warners\ProcessWarner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
