@@ -24,7 +24,7 @@ namespace Watcher.Models
         public DateTime StartTime { get; set; }
 
 
-        //TODO: Consider the possibility of getting rid of this thing
+        // TODO: Consider the possibility of getting rid of this thing
         public System.Diagnostics.Process RealProcess
         {
             get { return realProcess; }

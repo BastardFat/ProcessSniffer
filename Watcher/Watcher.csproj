@@ -34,6 +34,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,14 +47,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\ProcessKiller.cs" />
     <Compile Include="Core\ProcessList.cs" />
+    <Compile Include="Core\ProcessWarner.cs" />
     <Compile Include="Core\ProcessWatcher.cs" />
+    <Compile Include="Models\Enums\Criterias\ProcessFields.cs" />
+    <Compile Include="Models\Enums\Criterias\SelectionCriteriaMode.cs" />
+    <Compile Include="Models\Enums\Criterias\SelectionCriteriaType.cs" />
     <Compile Include="Models\Enums\CycleThreadStates.cs" />
     <Compile Include="Models\Process.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\CycleThread.cs" />
+    <Compile Include="Tools\StringHelper.cs" />
+    <Compile Include="Warners\Criterias\AndSelectionCriteria.cs" />
+    <Compile Include="Warners\Criterias\NotSelectionCriteria.cs" />
+    <Compile Include="Warners\Criterias\OrSelectionCriteria.cs" />
+    <Compile Include="Warners\Criterias\ProcessSelectionCriteria.cs" />
+    <Compile Include="Warners\Criterias\SelectionCriteria.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CryptDll\CryptDll.csproj">
       <Project>{ce6904f6-e6b2-4c26-b5b6-15e935aa1968}</Project>

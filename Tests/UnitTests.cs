@@ -6,6 +6,8 @@ using System.Threading;
 using Watcher.Core;
 using System.Collections.Generic;
 using Watcher.Models.Enums;
+using Watcher.Warners.Criterias;
+using Watcher.Models.Enums.Criterias;
 
 namespace Tests
 {
@@ -108,10 +110,11 @@ namespace Tests
 
             Thread.Sleep(400);
             Process.Start("calc.exe");
-            Thread.Sleep(400);
+            Thread.Sleep(1000);
             var t = Process.GetProcessesByName("calc")[0];
             t.CloseMainWindow();
-            Thread.Sleep(400);
+            t.WaitForExit();
+            Thread.Sleep(1000);
             ct.Dispose();
             Assert.IsTrue(started && ended, $"Started : {started}, ended : {ended}");
         }
@@ -144,14 +147,77 @@ namespace Tests
                 Thread.Sleep(400);
                 var t = Process.GetProcessesByName("calc")[0];
                 t.CloseMainWindow();
+                t.WaitForExit();
                 Thread.Sleep(400);
-
             }
 
             Assert.IsTrue(started && ended, $"Started : {started}, ended : {ended}");
 
         }
 
+        [TestMethod]
+        [TestCategory(nameof(SelectionCriteria))]
+        public void ProcessSelectionCriteriaTest()
+        {
+            foreach (var proc in Process.GetProcessesByName("calc"))
+            {
+                proc.CloseMainWindow();
+            }
+
+
+            Process.Start("calc.exe");
+            Thread.Sleep(200);
+            
+            SelectionCriteria criteria = new ProcessSelectionCriteria(ProcessFields.Name, SelectionCriteriaMode.StartWith, "calc");
+
+            ProcessList pl = new ProcessList();
+            pl.UpdateProcessList();
+
+
+            int checkNumber = 0;
+            foreach (var proc in pl.ActualProcessList)
+            {
+                if (criteria.CheckCriteria(proc)) checkNumber++;
+            }
+            Assert.AreEqual(checkNumber, 1);
+                            
+            var t = Process.GetProcessesByName("calc")[0];
+            t.CloseMainWindow();
+            t.WaitForExit();
+            pl.UpdateProcessList();
+            checkNumber = 0;
+            foreach (var proc in pl.ActualProcessList)
+            {
+                if (criteria.CheckCriteria(proc)) checkNumber++;
+            }
+            Assert.AreEqual(checkNumber, 0);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(SelectionCriteria))]
+        public void SelectionCriteriaSerializationTest()
+        {
+            SelectionCriteria criteria = new OrSelectionCriteria
+            (
+                new ProcessSelectionCriteria(ProcessFields.Path, SelectionCriteriaMode.StartWith, "D:"),
+                new AndSelectionCriteria
+                (
+                    new ProcessSelectionCriteria(ProcessFields.Title, SelectionCriteriaMode.Contains, "'\t\n\'\"\\\\"),
+                    new NotSelectionCriteria(new ProcessSelectionCriteria(ProcessFields.Name, SelectionCriteriaMode.Equal, "{{")),
+                    new OrSelectionCriteria
+                    (
+                        new ProcessSelectionCriteria(ProcessFields.Path, SelectionCriteriaMode.StartWith, "D:\\"),
+                        new NotSelectionCriteria(new ProcessSelectionCriteria(ProcessFields.Path, SelectionCriteriaMode.StartWith, "    } \n\t  \\n\\t"))
+                    )
+                )
+            );
+
+            var newcriteria = SelectionCriteria.CreateFromJson(criteria.ToJson());
+
+
+
+            Assert.AreEqual(criteria.ToString(), newcriteria.ToString());
+        }
 
     }
 }

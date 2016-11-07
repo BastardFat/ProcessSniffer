@@ -36,7 +36,7 @@ namespace Watcher.Core
 
         #region IDisposable Support
         private bool disposedValue = false;
-
+        public bool Disposed { get { return disposedValue; } }
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
