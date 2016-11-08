@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdminServer.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -13,9 +14,10 @@ namespace AdminServer.Controllers
         
         [HttpGet]
         [ActionName("test")]
-        public string Test()
+        [BasicAuthentication]
+        public IHttpActionResult Test()
         {
-            return "OK";
+            return Ok("cool");
         }
 
     }
