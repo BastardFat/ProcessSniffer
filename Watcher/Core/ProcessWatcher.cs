@@ -12,7 +12,11 @@ namespace Watcher.Core
         public ProcessWatcher(int refreshPeriod = 1000)
         {
             processList = new ProcessList();
-            cycleThread = new CycleThread(() => processList.UpdateProcessList(), refreshPeriod);
+            cycleThread = new CycleThread(
+                () => 
+                processList.UpdateProcessList()
+                , refreshPeriod
+                );
 
             cycleThread.StartCycle();
         }
@@ -31,6 +35,13 @@ namespace Watcher.Core
             add { processList.StartProcess += value; }
             remove { processList.StartProcess -= value; }
         }
+
+        public event Action<Models.Process> TitleChanged
+        {
+            add { processList.TitleChanged += value; }
+            remove { processList.TitleChanged -= value; }
+        }
+
 
         public List<Models.Process> GetActualProcessList() => processList.ActualProcessList;
 

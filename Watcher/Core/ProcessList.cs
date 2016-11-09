@@ -16,6 +16,7 @@ namespace Watcher.Core
 
         public event Action<Models.Process> StartProcess = delegate { };
         public event Action<Models.Process> EndProcess = delegate { };
+        public event Action<Models.Process> TitleChanged = delegate { };
 
 
         public void UpdateProcessList()
@@ -25,11 +26,14 @@ namespace Watcher.Core
             {
                 if (!ActualProcessList.Any((oldProc) => oldProc.Pid == newProc.Pid))
                     StartProcess?.Invoke(newProc);
+                if (ActualProcessList.Any((oldProc) => oldProc.Pid == newProc.Pid && oldProc.Title != newProc.Title))
+                    TitleChanged?.Invoke(newProc);
             }
             foreach (var oldProc in ActualProcessList)
             {
                 if (!newList.Any((newProc) => oldProc.Pid == newProc.Pid))
                     EndProcess?.Invoke(oldProc);
+                
             }
             ActualProcessList = newList;
         }

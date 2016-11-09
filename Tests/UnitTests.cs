@@ -78,6 +78,9 @@ namespace Tests
         {
             ProcessList pl = new ProcessList();
             pl.UpdateProcessList();
+
+            pl.ActualProcessList.ForEach(o => Console.WriteLine(o));
+
             Assert.IsTrue(pl.ActualProcessList.Count > 0);
         }
 
@@ -278,6 +281,18 @@ namespace Tests
             }
         }
 
+        [TestMethod]
+        [TestCategory(nameof(ProcessWarner))]
+        public void ProcessKillerTest1()
+        {
+            using (var procWatcher = new ProcessWatcher(100))
+            {
 
+                var procKiller = new ProcessKiller(procWatcher, new ProcessSelectionCriteria(ProcessFields.Name, SelectionCriteriaMode.Equal, "calc"));
+
+                Thread.Sleep(10000);
+
+            }
+        }
     }
 }

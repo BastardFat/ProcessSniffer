@@ -37,7 +37,7 @@ namespace Watcher.Warners
             if (WarningCriteria?.CheckCriteria(process) == false)
                 return;
 
-            WarnAboutProcess(process);
+            
 
 
             var processForKilling = process.FindByPID();
@@ -54,6 +54,7 @@ namespace Watcher.Warners
 
             killTask.Start();
 
+            WarnAboutProcess(process);
 
         }
 
