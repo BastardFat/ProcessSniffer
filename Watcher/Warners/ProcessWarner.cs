@@ -15,6 +15,7 @@ namespace Watcher.Warners
             _watcher = watcher;
 
             _watcher.StartProcess += StartProcessHandler;
+            _watcher.TitleChanged += StartProcessHandler;
 
         }
         public ProcessWarner(ProcessWatcher watcher, SelectionCriteria criteria) : this(watcher)
