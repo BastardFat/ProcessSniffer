@@ -52,9 +52,9 @@
             ItemsSource="{Binding Log, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
             VerticalGridLinesBrush="LightGray">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Item1, Mode=OneWay}" Header="Time" />
-                <DataGridTextColumn Binding="{Binding Item2, Mode=OneWay}" Header="Event" />
-                <DataGridTextColumn Binding="{Binding Item3, Mode=OneWay}" Header="Process" />
+                <DataGridTextColumn Binding="{Binding Time, Mode=OneWay}" Header="Time" />
+                <DataGridTextColumn Binding="{Binding EventType, Mode=OneWay}" Header="Event" />
+                <DataGridTextColumn Binding="{Binding ProcessName, Mode=OneWay}" Header="Process" />
             </DataGrid.Columns>
         </DataGrid>
 

@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using Client.Models;
+using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,23 +21,23 @@ namespace Client.ViewModels
 
             HardWarner.ProcessWarning += (proc) =>
             {
-                addEventToLog("Message", proc);
+                addEventToLog(EventTypes.Warned, proc);
                 WarnUserAboutStart(proc);
             };
             LightWarner.ProcessWarning += (proc) =>
             {
-                addEventToLog("Notification", proc);
+                addEventToLog(EventTypes.Notified, proc);
                 // TODO : BaloonPopup!
             };
             Killer.ProcessWarning += (proc) =>
             {
-                addEventToLog("Kill", proc);
+                addEventToLog(EventTypes.Killed, proc);
                 WarnUserAboutKill(proc);
             };
 
             ProcWatcher.StartProcess += (proc) =>
             {
-                addEventToLog("Start", proc);
+                addEventToLog(EventTypes.Started, proc);
                 RaisePropertyChanged(nameof(ActualProcesses));
             };
 
@@ -44,7 +45,7 @@ namespace Client.ViewModels
 
             ProcWatcher.EndProcess += (proc) =>
             {
-                addEventToLog("End", proc);
+                addEventToLog(EventTypes.Ended, proc);
                 RaisePropertyChanged(nameof(ActualProcesses));
             };
 
@@ -64,13 +65,13 @@ namespace Client.ViewModels
         }
 
 
-        private List<Tuple<DateTime, string, string>> log = new List<Tuple<DateTime, string, string>>();
-        public List<Tuple<DateTime, string, string>> Log { get { return log.ToList(); } }
+        private List<ScreenLogModel> log = new List<ScreenLogModel>();
+        public List<ScreenLogModel> Log { get { return log.ToList(); } }
 
 
-        private void addEventToLog(string eventType, Watcher.Models.Process proc)
+        private void addEventToLog(EventTypes eventType, Watcher.Models.Process proc)
         {
-            log.Add(new Tuple<DateTime, string, string>(DateTime.Now, eventType, proc.Name));
+            log.Add(new ScreenLogModel(DateTime.Now, eventType, proc.Name));
             RaisePropertyChanged(nameof(Log));
         }
 
