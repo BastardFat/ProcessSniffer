@@ -2,27 +2,32 @@
 
 <h2>@ViewBag.Title</h2>
 
-<form action="~/Home/ConfigsSaved" method="get">
-    <p class="alert-info"><span class="glyphicon glyphicon-cog"></span><b>&nbsp;Current Configuration</b></p>
-    <p>
-        Client process refresh period
-        <input class="form-control" type="number" name="RefreshTime" value="@Model.RefreshTime" />
-    </p>
-    <p>
-        Client reporting period
-        <input class="form-control" type="number" name="ReportPeriod" value="@Model.ReportPeriod" />
-    </p>
-    <br />
-    <br />
-        
-
-    <button type="submit" class="btn btn-default btn-lg"><b> Update configs </b></button>
-</form>
+ <!--action="~/Home/ConfigsSaved" method="get"-->
+<p class="alert-info"><span class="glyphicon glyphicon-cog"></span><b>&nbsp;Current Configuration</b></p>
+<p>
+    Client process refresh period
+    <input class="form-control" type="number" name="RefreshTime" value="@Model.RefreshTime" />
+</p>
+<p>
+    Client reporting period
+    <input class="form-control" type="number" name="ReportPeriod" value="@Model.ReportPeriod" />
+</p>
+<br />
 
 <div id="list" class="form-inline">
     
 </div>
+
 <button type="button" id="test" class="btn btn-default">Test</button>
+<br />
+<br />
+<button type="button" id="submit" class="btn btn-default btn-lg"><b> Update configs </b></button>
+<br />
+
+<div id="output" class="form-inline">
+
+</div>
+
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script>
@@ -34,12 +39,30 @@
                 "<button class=\"btn alert-danger\" id=\"delete_" + rows + "\">" +
                     "<span class=\"glyphicon glyphicon-remove\"></span>" +
                 "</button>" +
-                "<input class=\"form-control\" type=\"text\" name=\"field_" + rows + "\" value=\"\" />" +
-                "<input class=\"form-control\" type=\"text\" name=\"type_" + rows + "\" value=\"\" />" +
-                "<input class=\"form-control\" type=\"text\" name=\"compare_string_" + rows + "\" value=\"\" />" +
+                "<input class=\"form-control\" type=\"text\" id=\"field_" + rows + "\" value=\"\" />" +
+                "<input class=\"form-control\" type=\"text\" id=\"type_" + rows + "\" value=\"\" />" +
+                "<input class=\"form-control\" type=\"text\" id=\"compare_string_" + rows + "\" value=\"\" />" +
             "</p>");
+        $("#delete_" + rows).click(function () {
+            $(this.parentElement).remove();
+        });
+    });
+
+    $("#submit").click(function () {
+        var table = [];
+        
+        for (var i = 1; i <= rows; i++) {
+            if ($("#form_" + i).length) {
+                table.push( { field: $("#field_" + i).val(), type: $("#type_" + i).val(), compare_string: $("#compare_string_" + i).val() });
+            }
+        }
+
+        var t = JSON.stringify(table);
+
+        $("#output").append(t);
 
     });
+    
 </script>
 
 
