@@ -14,38 +14,68 @@
 </p>
 <br />
 
-<div id="list" class="form-inline">
-    
-</div>
+<table class="table-bordered" id="root_group">
+    <tr>
+        <td height="200" width="100" align="center">
+            <b>ADD</b>
+            <br />
+            <button class="btn alert-danger"><span class="glyphicon glyphicon-remove" /></button>
+        </td>
+        <td>
+            <div id="root_criterias">
 
-<button type="button" id="test" class="btn btn-default">Test</button>
+            </div>
+            <button type="button" id="root_add_criteria" class="btn btn-default">Add criteria</button>
+            <button type="button" id="root_add_group" class="btn btn-default">Add group</button>
+        </td>
+    </tr>
+</table>
+<br />
+<br />
+
+
+
+<button type="button" id="add_group" class="btn btn-default">Add group</button>
 <br />
 <br />
 <button type="button" id="submit" class="btn btn-default btn-lg"><b> Update configs </b></button>
 <br />
 
 <div id="output" class="form-inline">
-
+    
 </div>
 
 
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script>
-    var rows = 0;
-    $("#test").click(function () {
-        rows++;
-        $("#list").append(
-            "<p id=\"form_" + rows + "\">" +
-                "<button class=\"btn alert-danger\" id=\"delete_" + rows + "\">" +
+
+    function addRow(element, id) {
+        $(element).append(
+            "<p id=\"form_" + id + "\">" +
+                "<input class=\"form-control\" type=\"text\" id=\"field_" + id + "\" value=\"\" />" +
+                "<input class=\"form-control\" type=\"text\" id=\"type_" + id + "\" value=\"\" />" +
+                "<input class=\"form-control\" type=\"text\" id=\"compare_string_" + id + "\" value=\"\" />" +
+                "<button class=\"btn alert-danger\" id=\"delete_" + id + "\">" +
                     "<span class=\"glyphicon glyphicon-remove\"></span>" +
                 "</button>" +
-                "<input class=\"form-control\" type=\"text\" id=\"field_" + rows + "\" value=\"\" />" +
-                "<input class=\"form-control\" type=\"text\" id=\"type_" + rows + "\" value=\"\" />" +
-                "<input class=\"form-control\" type=\"text\" id=\"compare_string_" + rows + "\" value=\"\" />" +
-            "</p>");
-        $("#delete_" + rows).click(function () {
+            "</p>"); 
+        $("#delete_" + id).click(function () {
             $(this.parentElement).remove();
         });
+    }
+
+
+    $("button[id^='test_add_']").each(function (i, elem) {
+        $(elem).click(function () {
+            $(this.parentElement).append("<p>Hi, hello, blya</p>");
+        });
+    });
+
+
+    var rows = 0;
+    $("#add").click(function () {
+        rows++;
+        
     });
 
     $("#submit").click(function () {
